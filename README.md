@@ -31,3 +31,11 @@ algebra_bot
 ├── algebra_user_logs.json 
 
 └── README.md              
+
+## 🔧 Tech Stack
+
+* **Frontend:** Streamlit
+* **Backend Logic:** SymPy for symbolic algebra
+* **User Feedback Loop:** Thumbs up/down for reinforcement
+* **Data Logging:** JSON-based logging of user interactions
+
