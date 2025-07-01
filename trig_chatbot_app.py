@@ -53,7 +53,7 @@ def explain_trig(expr):
 
 def classify_query_type(query):
     query = query.lower()
-    if any(func in query for func in ['sin', 'cos', 'tan', 'sec', 'csc', 'cot']):
+    if any(func in query for func in ['sin', 'cos', 'tan', 'sec', 'cosec', 'cot']):
         if '=' in query:
             return 'solve_equation'
         else:
