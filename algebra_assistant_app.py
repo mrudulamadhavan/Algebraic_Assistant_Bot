@@ -72,12 +72,11 @@ def track_user_interaction(query, result_type):
         log.write(json.dumps(log_entry) + "\n")
     return reward
 
-def give_curious_response(reward):
-    if reward > 0:
-        riddle, answer = random.choice(riddles_and_answers)
-        return f"🧩 Curious Builder's Riddle: {riddle} \n🎯 Answer: {answer}"
-    else:
-        return f"🧠 Thought to Ponder: {random.choice(thoughts)}"
+def get_random_riddle():
+    return random.choice(riddles_and_answers)[0]
+
+def get_random_thought():
+    return random.choice(thoughts)
 
 if query:
     intent = classify_algebra_intent(query)
@@ -85,7 +84,7 @@ if query:
     st.subheader("🧠 Step-by-step Explanation")
     try:
         if intent == 'solve_equation':
-            st.markdown("**Detected Task:** Solve the equation")
+            st.markdown("**Detected Task:** Solve the equation**")
             solutions = solve_equation(query)
             st.markdown("**Original Equation:**")
             st.latex(query)
@@ -93,7 +92,7 @@ if query:
             for i, sol in enumerate(solutions, 1):
                 st.latex(f"x_{{{i}}} = {latex(sol)}")
         elif intent == 'expand_or_factor':
-            st.markdown("**Detected Task:** Expand and Factor")
+            st.markdown("**Detected Task:** Expand and Factor**")
             expanded = expand_expression(query)
             factored = factor_expression(str(expanded))
             st.markdown("**Expanded Form:**")
@@ -101,7 +100,7 @@ if query:
             st.markdown("**Factored Form:**")
             st.latex(latex(factored))
         else:
-            st.markdown("**Detected Task:** Simplify the expression")
+            st.markdown("**Detected Task:** Simplify the expression**")
             simplified = simplify_expression(query)
             st.markdown("**Simplified Result:**")
             st.latex(f"{query} = {latex(simplified)}")
@@ -109,7 +108,11 @@ if query:
         st.error(f"❌ Error: {e}")
 
     st.markdown("---")
-    st.info(give_curious_response(reward))
+    feedback = st.radio("🤖 Was this solution useful?", ["Yes", "No"])
+    if feedback == "Yes":
+        st.info("🧩 Curious Builder's Riddle: " + get_random_riddle())
+    else:
+        st.info("🧠 Thought to Ponder: " + get_random_thought())
 
 st.sidebar.title("📚 Supported Operations")
 st.sidebar.markdown("""
