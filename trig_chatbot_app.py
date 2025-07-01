@@ -22,28 +22,29 @@ def preprocess_degrees(expr):
 
 def simplify_trig(expr):
     try:
-        expr = preprocess_degrees(expr)
-        parsed_expr = parse_expr(expr, evaluate=True)
+        expr_preprocessed = preprocess_degrees(expr)
+        parsed_expr = parse_expr(expr_preprocessed, evaluate=True)
         simplified = simplify(parsed_expr)
-        return simplified
+        return expr, parsed_expr, simplified
     except Exception as e:
-        return f"Error simplifying expression: {e}"
+        return expr, expr, f"Error simplifying expression: {e}"
 
 def solve_trig_equation(expr):
     try:
-        expr = preprocess_degrees(expr)
-        parsed_expr = parse_expr(expr, evaluate=False)
+        expr_preprocessed = preprocess_degrees(expr)
+        parsed_expr = parse_expr(expr_preprocessed, evaluate=False)
         equation = Eq(parsed_expr, 0)
         solution = solveset(equation, x, domain=S.Reals)
-        return solution
+        return equation, solution
     except Exception as e:
-        return f"Error solving equation: {e}"
+        return expr, f"Error solving equation: {e}"
 
 def explain_trig(expr):
     try:
-        simplified = simplify_trig(expr)
-        steps = f"1. Original Expression: $${expr}$$\n"
-        steps += f"2. Simplified Expression: $${simplified}$$"
+        raw, parsed_expr, simplified = simplify_trig(expr)
+        steps = f"1. Original Expression: $${raw}$$\n"
+        steps += f"2. Converted to Radians: $${parsed_expr}$$\n"
+        steps += f"3. Simplified Result: $${simplified}$$"
         return steps
     except:
         return "Could not generate explanation."
@@ -59,6 +60,7 @@ def classify_query_type(query):
         return 'inverse_trig'
     else:
         return 'unknown'
+
 
 def track_user_interaction(query, result_type):
     log_entry = {"query": query, "type": result_type, "reward": reward_for(result_type)}
@@ -86,22 +88,26 @@ if query:
 
     st.subheader("🧠 Step-by-step Explanation")
     if intent == 'solve_equation':
-        explanation = solve_trig_equation(query)
-        st.latex(f"{query} = 0")
-        st.write("**Solution Set:**", explanation)
+        eqn, solution = solve_trig_equation(query)
+        st.latex(f"1. Equation: {eqn}")
+        st.latex(f"2. Solution Set: {solution}")
     elif intent == 'simplify_expression':
-        st.markdown(explain_trig(query))
+        raw_expr, parsed_expr, simplified = simplify_trig(query)
+        st.latex(f"1. Original Expression: {raw_expr}")
+        st.latex(f"2. Converted to Radians: {parsed_expr}")
+        st.latex(f"3. Simplified Result: {simplified}")
     elif intent == 'inverse_trig':
         st.write("📘 This involves inverse trigonometric functions. Currently supports `asin`, `acos`, `atan`.")
         try:
             parsed = parse_expr(query)
-            st.latex(f"{query} = {parsed.evalf()}")
+            st.latex(f"1. Expression: {query}")
+            st.latex(f"2. Evaluated Result: {parsed.evalf()}")
         except:
             st.write("Could not evaluate inverse function.")
     else:
         st.warning("❓ Unable to classify your query. Try a different format or use sin/cos/tan.")
 
-    
+   
 
 st.sidebar.title("🧮 Advanced Features")
 st.sidebar.info("We track your queries anonymously and assign rewards to improve our learning agent.")
