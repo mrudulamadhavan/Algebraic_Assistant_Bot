@@ -63,6 +63,8 @@ algebra_bot
 *  Launch the app
 > streamlit run algebra_bot.py
 
-### **Streamlit App Link :** https://algebrabot.streamlit.app/
+### **Streamlit App Link :** 
+> https://algebrabot.streamlit.app/
 
-### **Demo Link :** https://drive.google.com/file/d/1u9l3jMDgRdwzo4xHDcaAZYQMs8FvgrfP/view?usp=sharing
+### **Demo Link :** 
+> https://drive.google.com/file/d/1u9l3jMDgRdwzo4xHDcaAZYQMs8FvgrfP/view?usp=sharing
