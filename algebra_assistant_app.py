@@ -115,9 +115,11 @@ if query:
         thumbs_down = st.button("👎 No")
 
     if thumbs_up:
-        st.info("🧩 Curious Builder's Riddle: " + get_random_riddle())
+        st.info("🧩 Curious Builder's Riddle: ")
+        st.write(get_random_riddle())
     elif thumbs_down:
-        st.info("🧠 Thought to Ponder: " + get_random_thought())
+        st.info("🧠 Thought to Ponder: ")
+        st.write(get_random_thought())
 
 
 st.sidebar.title("📚 Supported Operations")
