@@ -1,0 +1,6 @@
+{"query": "2*x + 3*x - 4", "type": "simplify", "reward": 0.6}
+{"query": "(x+2)*(x-5)", "type": "expand_or_factor", "reward": 0.8}
+{"query": "2*x + 3 = 7", "type": "solve_equation", "reward": 1.0}
+{"query": "3x - 2 = x + 4", "type": "solve_equation", "reward": 1.0}
+{"query": "x**2 - 4", "type": "expand_or_factor", "reward": 0.8}
+{"query": "x + y", "type": "simplify", "reward": 0.6}
