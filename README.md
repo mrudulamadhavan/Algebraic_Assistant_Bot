@@ -1,13 +1,11 @@
 # 📘 Algebra Assistant Bot
 
-## 🧠 Objective:
+## 🧠 Objective
 
-An interactive Streamlit-based chatbot that helps users:
+To develop an interactive, agentic AI-powered Algebra Assistant that:
 
-    🔹 Simplify expressions    
-    🔹 Expand & factor polynomials (linear → cubic)    
-    🔹 Solve algebraic equations    
-    🔹 Learn through AI-powered reinforcement and riddles
+> * Solves, simplifies, expands, and factors algebraic expressions and equations.
+> * Supports user learning through step-by-step breakdowns, reinforcement tracking, and curiosity prompts (riddles/thoughts).
 
 
 
