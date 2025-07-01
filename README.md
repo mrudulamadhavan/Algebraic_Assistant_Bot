@@ -55,8 +55,12 @@ algebra_bot
 * **User Feedback Loop:** Thumbs up/down for reinforcement
 * **Data Logging:** JSON-based logging of user interactions
 
-#### Run It
+#### 🚀 Run It
 
-pip install streamlit sympy  
+# Install dependencies
+pip install streamlit sympy
+
+# Launch the app
 streamlit run algebra_bot.py
+
 
