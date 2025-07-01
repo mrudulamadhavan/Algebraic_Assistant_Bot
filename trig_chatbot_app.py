@@ -11,11 +11,13 @@ import os
 # --- Utility Functions ---
 def simplify_trig(expr):
     try:
-        parsed_expr = parse_expr(expr, evaluate=False)
+        expr = preprocess_degrees(expr)
+        parsed_expr = parse_expr(expr, evaluate=True)
         simplified = simplify(parsed_expr)
         return simplified
     except Exception as e:
         return f"Error simplifying expression: {e}"
+
 
 def solve_trig_equation(expr):
     try:
@@ -25,6 +27,20 @@ def solve_trig_equation(expr):
         return solution
     except Exception as e:
         return f"Error solving equation: {e}"
+
+
+def preprocess_degrees(expr):
+    # Replace degree angles with radians
+    replacements = {
+        'sin 30': 'sin(pi/6)', 'cos 30': 'cos(pi/6)', 'tan 30': 'tan(pi/6)',
+        'sin 45': 'sin(pi/4)', 'cos 45': 'cos(pi/4)', 'tan 45': 'tan(pi/4)',
+        'sin 60': 'sin(pi/3)', 'cos 60': 'cos(pi/3)', 'tan 60': 'tan(pi/3)',
+        'sin 90': 'sin(pi/2)', 'cos 90': 'cos(pi/2)', 'tan 90': 'tan(pi/2)',
+    }
+    for deg, rad in replacements.items():
+        expr = expr.replace(deg, rad)
+    return expr
+
 
 def explain_trig(expr):
     try:
