@@ -1,6 +1,7 @@
 # 📘 Algebra Assistant Bot
 
-🧠 Objective:
+## 🧠 Objective:
+
 An interactive Streamlit-based chatbot that helps users:
 
     🔹 Simplify expressions    
