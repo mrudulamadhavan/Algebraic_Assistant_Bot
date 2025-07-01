@@ -9,6 +9,17 @@ import json
 import os
 
 # --- Utility Functions ---
+def preprocess_degrees(expr):
+    replacements = {
+        'sin 30': 'sin(pi/6)', 'cos 30': 'cos(pi/6)', 'tan 30': 'tan(pi/6)',
+        'sin 45': 'sin(pi/4)', 'cos 45': 'cos(pi/4)', 'tan 45': 'tan(pi/4)',
+        'sin 60': 'sin(pi/3)', 'cos 60': 'cos(pi/3)', 'tan 60': 'tan(pi/3)',
+        'sin 90': 'sin(pi/2)', 'cos 90': 'cos(pi/2)', 'tan 90': 'tan(pi/2)'
+    }
+    for deg, rad in replacements.items():
+        expr = expr.replace(deg, rad)
+    return expr
+
 def simplify_trig(expr):
     try:
         expr = preprocess_degrees(expr)
@@ -18,29 +29,15 @@ def simplify_trig(expr):
     except Exception as e:
         return f"Error simplifying expression: {e}"
 
-
 def solve_trig_equation(expr):
     try:
+        expr = preprocess_degrees(expr)
         parsed_expr = parse_expr(expr, evaluate=False)
         equation = Eq(parsed_expr, 0)
         solution = solveset(equation, x, domain=S.Reals)
         return solution
     except Exception as e:
         return f"Error solving equation: {e}"
-
-
-def preprocess_degrees(expr):
-    # Replace degree angles with radians
-    replacements = {
-        'sin 30': 'sin(pi/6)', 'cos 30': 'cos(pi/6)', 'tan 30': 'tan(pi/6)',
-        'sin 45': 'sin(pi/4)', 'cos 45': 'cos(pi/4)', 'tan 45': 'tan(pi/4)',
-        'sin 60': 'sin(pi/3)', 'cos 60': 'cos(pi/3)', 'tan 60': 'tan(pi/3)',
-        'sin 90': 'sin(pi/2)', 'cos 90': 'cos(pi/2)', 'tan 90': 'tan(pi/2)',
-    }
-    for deg, rad in replacements.items():
-        expr = expr.replace(deg, rad)
-    return expr
-
 
 def explain_trig(expr):
     try:
@@ -53,7 +50,7 @@ def explain_trig(expr):
 
 def classify_query_type(query):
     query = query.lower()
-    if any(func in query for func in ['sin', 'cos', 'tan', 'sec', 'cosec', 'cot']):
+    if any(func in query for func in ['sin', 'cos', 'tan', 'sec', 'csc', 'cot']):
         if '=' in query:
             return 'solve_equation'
         else:
@@ -62,44 +59,6 @@ def classify_query_type(query):
         return 'inverse_trig'
     else:
         return 'unknown'
-
-def plot_unit_circle():
-    fig, ax = plt.subplots()
-    circle = plt.Circle((0, 0), 1, color='blue', fill=False)
-    ax.add_artist(circle)
-    ax.axhline(0, color='gray', linewidth=0.5)
-    ax.axvline(0, color='gray', linewidth=0.5)
-    ax.set_aspect('equal')
-    ax.set_xlim(-1.2, 1.2)
-    ax.set_ylim(-1.2, 1.2)
-    ax.set_title('Unit Circle')
-    st.pyplot(fig)
-
-def plot_triangle():
-    fig, ax = plt.subplots()
-    ax.plot([0, 1], [0, 0], 'k')  # base
-    ax.plot([1, 1], [0, 1], 'k')  # height
-    ax.plot([0, 1], [0, 1], 'k')  # hypotenuse
-    ax.text(0.5, -0.1, 'adjacent', ha='center')
-    ax.text(1.05, 0.5, 'opposite', va='center')
-    ax.text(0.5, 0.5, 'hypotenuse', rotation=45)
-    ax.set_aspect('equal')
-    ax.axis('off')
-    ax.set_title('Right Triangle: sin = opposite/hypotenuse')
-    st.pyplot(fig)
-
-def plot_trig_graph():
-    x_vals = np.linspace(-2 * np.pi, 2 * np.pi, 1000)
-    fig, ax = plt.subplots()
-    ax.plot(x_vals, np.sin(x_vals), label='sin(x)')
-    ax.plot(x_vals, np.cos(x_vals), label='cos(x)')
-    ax.plot(x_vals, np.tan(x_vals), label='tan(x)', linestyle='dashed', alpha=0.6)
-    ax.axhline(0, color='black', linewidth=0.5)
-    ax.axvline(0, color='black', linewidth=0.5)
-    ax.set_ylim(-5, 5)
-    ax.legend()
-    ax.set_title('Trigonometric Functions')
-    st.pyplot(fig)
 
 def track_user_interaction(query, result_type):
     log_entry = {"query": query, "type": result_type, "reward": reward_for(result_type)}
@@ -142,13 +101,8 @@ if query:
     else:
         st.warning("❓ Unable to classify your query. Try a different format or use sin/cos/tan.")
 
-    st.subheader("📊 Visual Aid")
-    if st.checkbox("Show Unit Circle"):
-        plot_unit_circle()
-    if st.checkbox("Show Right Triangle Diagram"):
-        plot_triangle()
-    if st.checkbox("Show Graphs of sin(x), cos(x), tan(x)"):
-        plot_trig_graph()
+    
 
 st.sidebar.title("🧮 Advanced Features")
 st.sidebar.info("We track your queries anonymously and assign rewards to improve our learning agent.")
+
