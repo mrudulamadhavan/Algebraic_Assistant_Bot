@@ -25,7 +25,20 @@ To develop an interactive, agentic AI-powered Algebra Assistant that:
 | 📈 Reward-based Logging     | Reinforcement mechanism to adaptively log and improve interaction           |
 | 📁 User Log File            | Saves all user queries, intent, and reward to `algebra_user_logs.json`      |
 
-## 📂 File Structure
+### 🤖 Agent Model (Learning Mechanism)
+While there's no ML model training on data yet, the app simulates agent learning using:
+
+* Intent Classification (rule-based)
+* Reinforcement Reward Assignment:
+
+> * solve_equation: +1.0
+> * expand_or_factor: +0.8
+> * simplify: +0.6
+> * unknown: -0.5
+
+All interactions are logged in algebra_user_logs.json, forming a dataset for potential model training.
+
+###  📂 File Structure
 
 algebra_bot
 
@@ -35,7 +48,7 @@ algebra_bot
 
 └── README.md              
 
-## 🔧 Tech Stack
+###  🔧 Tech Stack
 
 * **Frontend:** Streamlit
 * **Backend Logic:** SymPy for symbolic algebra
