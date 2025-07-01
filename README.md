@@ -14,7 +14,7 @@ An interactive, intelligent Streamlit web app that solves, simplifies, expands, 
 
 ## 📂 File Structure
 
-algebra_bot/
-├── algebra_bot.py         ← Main Streamlit app
-├── algebra_user_logs.json ← Reward log file
-└── README.md              ← You're reading it!
+algebra_bot
+├── algebra_bot.py          
+├── algebra_user_logs.json 
+└── README.md              
