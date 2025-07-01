@@ -126,9 +126,9 @@ if query:
 st.sidebar.title("📚 Supported Operations")
 st.sidebar.markdown("""
 - Simplify algebraic expressions
-- Expand products of polynomials
-- Factor expressions
-- Solve linear and quadratic equations
+- Expand products of polynomials (including cubic expressions)
+- Factor expressions (up to cubic polynomials)
+- Solve linear, quadratic, and cubic equations
 """)
 st.sidebar.markdown("---")
 st.sidebar.info("We track your queries anonymously and assign rewards to improve our algebra learning assistant.")
