@@ -84,7 +84,7 @@ if query:
     st.subheader("🧠 Step-by-step Explanation")
     try:
         if intent == 'solve_equation':
-            st.markdown("**Detected Task:** Solve the equation**")
+            st.markdown("**Detected Task:** Solve the equation")
             solutions = solve_equation(query)
             st.markdown("**Original Equation:**")
             st.latex(query)
@@ -92,7 +92,7 @@ if query:
             for i, sol in enumerate(solutions, 1):
                 st.latex(f"x_{{{i}}} = {latex(sol)}")
         elif intent == 'expand_or_factor':
-            st.markdown("**Detected Task:** Expand and Factor**")
+            st.markdown("**Detected Task:** Expand and Factor")
             expanded = expand_expression(query)
             factored = factor_expression(str(expanded))
             st.markdown("**Expanded Form:**")
@@ -100,7 +100,7 @@ if query:
             st.markdown("**Factored Form:**")
             st.latex(latex(factored))
         else:
-            st.markdown("**Detected Task:** Simplify the expression**")
+            st.markdown("**Detected Task:** Simplify the expression")
             simplified = simplify_expression(query)
             st.markdown("**Simplified Result:**")
             st.latex(f"{query} = {latex(simplified)}")
@@ -108,11 +108,17 @@ if query:
         st.error(f"❌ Error: {e}")
 
     st.markdown("---")
-    feedback = st.radio("🤖 Was this solution useful?", ["Yes", "No"])
-    if feedback == "Yes":
+    col1, col2 = st.columns(2)
+    with col1:
+        thumbs_up = st.button("👍 Yes")
+    with col2:
+        thumbs_down = st.button("👎 No")
+
+    if thumbs_up:
         st.info("🧩 Curious Builder's Riddle: " + get_random_riddle())
-    else:
+    elif thumbs_down:
         st.info("🧠 Thought to Ponder: " + get_random_thought())
+
 
 st.sidebar.title("📚 Supported Operations")
 st.sidebar.markdown("""
