@@ -1,6 +1,17 @@
 # 📘 Algebra Assistant Bot
 
-An interactive, intelligent Streamlit web app that solves, simplifies, expands, and factors algebraic expressions and equations. Designed to assist learners and curious minds with step-by-step solutions and reinforcement feedback, it also includes riddle-based learning motivation.
+🧠 Objective:
+An interactive Streamlit-based chatbot that helps users:
+
+    🔹 Simplify expressions    
+    🔹 Expand & factor polynomials (linear → cubic)    
+    🔹 Solve algebraic equations    
+    🔹 Learn through AI-powered reinforcement and riddles
+
+
+
+
+
 
 | Feature                     | Description                                                                 |
 | --------------------------- | --------------------------------------------------------------------------- |
