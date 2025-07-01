@@ -1,6 +1,6 @@
 import streamlit as st
-from sympy import symbols, sin, cos, tan, simplify, Eq, solveset, S, pi, degree, acos, asin, atan
-from sympy.parsing.sympy_parser import parse_expr
+from sympy import symbols, sin, cos, tan, simplify, Eq, solveset, S, pi, degree, acos, asin, atan, sqrt
+from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication_application
 from sympy.abc import x
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,6 +9,8 @@ import json
 import os
 
 # --- Utility Functions ---
+transformations = (standard_transformations + (implicit_multiplication_application,))
+
 def preprocess_degrees(expr):
     replacements = {
         'sin 30': 'sin(pi/6)', 'cos 30': 'cos(pi/6)', 'tan 30': 'tan(pi/6)',
@@ -23,7 +25,7 @@ def preprocess_degrees(expr):
 def simplify_trig(expr):
     try:
         expr_preprocessed = preprocess_degrees(expr)
-        parsed_expr = parse_expr(expr_preprocessed, evaluate=True)
+        parsed_expr = parse_expr(expr_preprocessed, evaluate=True, transformations=transformations)
         simplified = simplify(parsed_expr)
         return expr, parsed_expr, simplified
     except Exception as e:
@@ -32,7 +34,7 @@ def simplify_trig(expr):
 def solve_trig_equation(expr):
     try:
         expr_preprocessed = preprocess_degrees(expr)
-        parsed_expr = parse_expr(expr_preprocessed, evaluate=False)
+        parsed_expr = parse_expr(expr_preprocessed, evaluate=False, transformations=transformations)
         equation = Eq(parsed_expr, 0)
         solution = solveset(equation, x, domain=S.Reals)
         return equation, solution
@@ -61,6 +63,43 @@ def classify_query_type(query):
     else:
         return 'unknown'
 
+def plot_unit_circle():
+    fig, ax = plt.subplots()
+    circle = plt.Circle((0, 0), 1, color='blue', fill=False)
+    ax.add_artist(circle)
+    ax.axhline(0, color='gray', linewidth=0.5)
+    ax.axvline(0, color='gray', linewidth=0.5)
+    ax.set_aspect('equal')
+    ax.set_xlim(-1.2, 1.2)
+    ax.set_ylim(-1.2, 1.2)
+    ax.set_title('Unit Circle')
+    st.pyplot(fig)
+
+def plot_triangle():
+    fig, ax = plt.subplots()
+    ax.plot([0, 1], [0, 0], 'k')  # base
+    ax.plot([1, 1], [0, 1], 'k')  # height
+    ax.plot([0, 1], [0, 1], 'k')  # hypotenuse
+    ax.text(0.5, -0.1, 'adjacent', ha='center')
+    ax.text(1.05, 0.5, 'opposite', va='center')
+    ax.text(0.5, 0.5, 'hypotenuse', rotation=45)
+    ax.set_aspect('equal')
+    ax.axis('off')
+    ax.set_title('Right Triangle: sin = opposite/hypotenuse')
+    st.pyplot(fig)
+
+def plot_trig_graph():
+    x_vals = np.linspace(-2 * np.pi, 2 * np.pi, 1000)
+    fig, ax = plt.subplots()
+    ax.plot(x_vals, np.sin(x_vals), label='sin(x)')
+    ax.plot(x_vals, np.cos(x_vals), label='cos(x)')
+    ax.plot(x_vals, np.tan(x_vals), label='tan(x)', linestyle='dashed', alpha=0.6)
+    ax.axhline(0, color='black', linewidth=0.5)
+    ax.axvline(0, color='black', linewidth=0.5)
+    ax.set_ylim(-5, 5)
+    ax.legend()
+    ax.set_title('Trigonometric Functions')
+    st.pyplot(fig)
 
 def track_user_interaction(query, result_type):
     log_entry = {"query": query, "type": result_type, "reward": reward_for(result_type)}
@@ -99,7 +138,7 @@ if query:
     elif intent == 'inverse_trig':
         st.write("📘 This involves inverse trigonometric functions. Currently supports `asin`, `acos`, `atan`.")
         try:
-            parsed = parse_expr(query)
+            parsed = parse_expr(query, transformations=transformations)
             st.latex(f"1. Expression: {query}")
             st.latex(f"2. Evaluated Result: {parsed.evalf()}")
         except:
@@ -107,7 +146,13 @@ if query:
     else:
         st.warning("❓ Unable to classify your query. Try a different format or use sin/cos/tan.")
 
-   
+    st.subheader("📊 Visual Aid")
+    if st.checkbox("Show Unit Circle"):
+        plot_unit_circle()
+    if st.checkbox("Show Right Triangle Diagram"):
+        plot_triangle()
+    if st.checkbox("Show Graphs of sin(x), cos(x), tan(x)"):
+        plot_trig_graph()
 
 st.sidebar.title("🧮 Advanced Features")
 st.sidebar.info("We track your queries anonymously and assign rewards to improve our learning agent.")
