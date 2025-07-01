@@ -12,7 +12,8 @@ st.set_page_config(page_title="Algebra Assistant Bot", page_icon="📘")
 st.title("📘 Algebraic Assistant Chatbot")
 
 st.markdown("🔍 **Enter an algebraic expression or equation:**")
-query = st.text_input("e.g., 2*x + 3*x = 10 or (x+2)*(x-3)")
+st.write("NB:  Use ** for powers and * for multiplication.")
+query = st.text_input("e.g., x**2 + 3*x = 10 or (x+2)*(x-3)")
 
 riddles_and_answers = [
     ("I’m always in the middle of algebra, but never in geometry. What am I?", "The letter 'b'"),
