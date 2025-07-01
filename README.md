@@ -57,10 +57,10 @@ algebra_bot
 
 #### 🚀 Run It
 
-# Install dependencies
-pip install streamlit sympy
+* Install dependencies
+ > pip install streamlit sympy
 
-# Launch the app
-streamlit run algebra_bot.py
+*  Launch the app
+> streamlit run algebra_bot.py
 
 
