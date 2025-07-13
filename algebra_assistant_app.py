@@ -9,7 +9,7 @@ x, y, z = symbols('x y z')
 transformations = (standard_transformations + (implicit_multiplication_application,))
 
 st.set_page_config(page_title="Algebra Assistant Bot", page_icon="📘")
-st.title("📘 Algebraic Assistant Chatbot")
+st.title("📘 Algebraic Assistant Bot")
 
 st.markdown("🔍 **Enter an algebraic expression or equation:**")
 st.write("ℹ️ Use `**` for powers and `*` for multiplication.")
